@@ -3,73 +3,65 @@ package com.krrish.loginflow.data
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.krrish.loginflow.data.rules.Validator
+import com.krrish.loginflow.navigation.PostOfficeAppRouter
+import com.krrish.loginflow.navigation.Screen
 
 class LoginViewModel : ViewModel() {
     private val TAG = LoginViewModel::class.simpleName
-    var registrationUiState = mutableStateOf(RegistrationUiState())
+    var loginUiState = mutableStateOf(LoginUIState())
+    var allValidationsPassed = mutableStateOf(false)
+    var logInProgress = mutableStateOf(false)
 
-    fun onEvent(event: UIEvent) {
-        validateDataWithRules()
+    fun onEvent(event: LoginUIEvent) {
         when (event) {
-            is UIEvent.FirstNameChanged -> {
-                registrationUiState.value = registrationUiState.value.copy(
-                    firstName = event.firstName
-                )
-                printState()
-            }
-
-            is UIEvent.LastNameChanged -> {
-                registrationUiState.value = registrationUiState.value.copy(
-                    lastName = event.lastName
-                )
-                printState()
-            }
-
-            is UIEvent.EmailChanged -> {
-                registrationUiState.value = registrationUiState.value.copy(
+            is LoginUIEvent.EmailChanged -> {
+                loginUiState.value = loginUiState.value.copy(
                     email = event.email
                 )
-                printState()
             }
 
-            is UIEvent.PasswordChanged -> {
-                registrationUiState.value = registrationUiState.value.copy(
+            is LoginUIEvent.PasswordChanged -> {
+                loginUiState.value = loginUiState.value.copy(
                     password = event.password
                 )
-                printState()
             }
 
-            is UIEvent.RegisterButtonClicked -> {
-                signUp()
+            is LoginUIEvent.LoginButtonClicked -> {
+                login()
             }
         }
+        validateDataWithRules()
     }
 
-    private fun signUp() {
-        Log.d(TAG, "signUp: ")
-        printState()
-        validateDataWithRules()
+    private fun login() {
+        logInProgress.value = true
+        val email = loginUiState.value.email
+        val password = loginUiState.value.password
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                Log.d(TAG, "login: success ${it.isSuccessful}")
+
+                if (it.isSuccessful) {
+                    logInProgress.value = false
+                    PostOfficeAppRouter.navigateTo(Screen.HomeScreen)
+                }
+            }.addOnFailureListener {
+                Log.e(TAG, "login: Failed ${it.localizedMessage}")
+                logInProgress.value = false
+            }
     }
 
     private fun validateDataWithRules() {
-        val fNameResult = Validator.validateFirstName(fName = registrationUiState.value.firstName)
-        val lNameResult = Validator.validateLastName(lName = registrationUiState.value.lastName)
-        val emailResult = Validator.validateEmail(email = registrationUiState.value.email)
-        val passwordResult =
-            Validator.validatePassword(password = registrationUiState.value.password)
-        Log.d(TAG, "validateDataWithRules: $fNameResult $lNameResult $emailResult $passwordResult")
+        val emailResult = Validator.validateEmail(email = loginUiState.value.email)
+        val passwordResult = Validator.validatePassword(password = loginUiState.value.password)
 
-        registrationUiState.value = registrationUiState.value.copy(
-            firstNameError = fNameResult.status,
-            lastNameError = lNameResult.status,
+        loginUiState.value = loginUiState.value.copy(
             emailError = emailResult.status,
             passwordError = passwordResult.status,
         )
-    }
 
-    private fun printState() {
-        Log.d(TAG, "printState: ")
-        Log.d(TAG, registrationUiState.value.toString())
+        allValidationsPassed.value = emailResult.status && passwordResult.status
     }
 }

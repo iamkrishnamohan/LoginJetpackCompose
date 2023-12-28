@@ -17,4 +17,6 @@
     <string name="forgot_password">Forgot your password</string>
     <string name="go_to_login">Already have an account? Login</string>
     <string name="go_to_register">Dont have an account? Register</string>
+    <string name="home">Home</string>
+    <string name="logout">Logout</string>
 </resources>

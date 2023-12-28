@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "206836807582",
+    "project_id": "logincompose-e1e76",
+    "storage_bucket": "logincompose-e1e76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206836807582:android:02fbdafefa2bbc066e488f",
+        "android_client_info": {
+          "package_name": "com.krrish.loginflow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3ZeYqucSn5uboWsb2VOoeMXVYGSzcu_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

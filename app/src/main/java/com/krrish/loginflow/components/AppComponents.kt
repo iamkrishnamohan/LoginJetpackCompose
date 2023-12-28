@@ -1,4 +1,4 @@
-package com.krrish.loginflow.Components
+package com.krrish.loginflow.components
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -185,7 +185,11 @@ fun PasswordTextFieldComponent(
 }
 
 @Composable
-fun CheckboxComponent(value: String, onTextSelected: (String) -> Unit) {
+fun CheckboxComponent(
+    value: String,
+    onTextSelected: (String) -> Unit,
+    onCheckedChange: (Boolean) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -197,8 +201,12 @@ fun CheckboxComponent(value: String, onTextSelected: (String) -> Unit) {
         }
         Checkbox(
             checked = checkedState.value,
-            onCheckedChange = { checkedState.value != checkedState.value }
-        )
+            onCheckedChange = {
+                checkedState.value = !checkedState.value
+                onCheckedChange.invoke(it)
+            },
+
+            )
 
         ClickableTextComponent(value = value, onTextSelected = onTextSelected)
     }
@@ -239,16 +247,18 @@ fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit) {
 }
 
 @Composable
-fun ButtonComponent(value: String, onButtonClicked: () -> Unit) {
+fun ButtonComponent(value: String, onButtonClicked: () -> Unit, isEnabled: Boolean = false) {
     Button(
-        onClick = {
-            onButtonClicked.invoke()
-        },
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(48.dp),
+        onClick = {
+            onButtonClicked.invoke()
+        },
         contentPadding = PaddingValues(),
-        colors = ButtonDefaults.buttonColors(Color.Transparent)
+        colors = ButtonDefaults.buttonColors(Color.Transparent),
+        shape = RoundedCornerShape(50.dp),
+        enabled = isEnabled
     ) {
         Box(
             modifier = Modifier
