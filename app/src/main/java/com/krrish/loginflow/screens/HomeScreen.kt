@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,26 +15,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.krrish.loginflow.R
+import com.krrish.loginflow.components.AppToolbar
 import com.krrish.loginflow.components.ButtonComponent
 import com.krrish.loginflow.components.HeadingTextComponent
 import com.krrish.loginflow.data.SignupViewModel
 
+
 @Composable
 fun HomeScreen(signupViewModel: SignupViewModel = viewModel()) {
-    Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(28.dp)
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            HeadingTextComponent(value = stringResource(R.string.home))
 
-            ButtonComponent(value = stringResource(R.string.logout), onButtonClicked = {
-                signupViewModel.logout()
-            }, isEnabled = true)
+    Scaffold(
+        topBar = {
+            AppToolbar(toolbarTitle = stringResource(id = R.string.home),
+                logoutButtonClicked = {
+                    signupViewModel.logout()
+                })
+        }
+    ) { paddingValues ->
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(paddingValues)
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+
+
+            }
         }
     }
+
 }
 
 @Preview

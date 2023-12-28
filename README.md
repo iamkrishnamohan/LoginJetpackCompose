@@ -4,4 +4,8 @@ Login Screen
 
 MVVM
 
-Validations 
+Validations
+
+Firebase Auth for Login and Signup
+
+Scaffold for Menu
