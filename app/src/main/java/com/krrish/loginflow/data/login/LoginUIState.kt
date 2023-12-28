@@ -1,4 +1,4 @@
-package com.krrish.loginflow.data
+package com.krrish.loginflow.data.login
 
 data class LoginUIState(
     val email: String = "",

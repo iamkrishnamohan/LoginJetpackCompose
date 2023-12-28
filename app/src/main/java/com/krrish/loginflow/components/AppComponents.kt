@@ -2,35 +2,50 @@ package com.krrish.loginflow.components
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
@@ -47,13 +62,16 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.krrish.loginflow.R
+import com.krrish.loginflow.data.NavigationItem
 import com.krrish.loginflow.ui.theme.GrayColor
 import com.krrish.loginflow.ui.theme.Primary
 import com.krrish.loginflow.ui.theme.Secondary
 import com.krrish.loginflow.ui.theme.TextColor
+import com.krrish.loginflow.ui.theme.WhiteColor
 import com.krrish.loginflow.ui.theme.componentShapes
 
 @Composable
@@ -360,5 +378,116 @@ fun UnderLinedTextComponent(value: String) {
         color = colorResource(id = R.color.colorGray),
         textAlign = TextAlign.Center,
         textDecoration = TextDecoration.Underline
+    )
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppToolbar(
+    toolbarTitle: String, logoutButtonClicked: () -> Unit,
+    navigationIconClicked: () -> Unit
+) {
+    TopAppBar(
+        title = {
+            Text(text = toolbarTitle, color = WhiteColor)
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+            actionIconContentColor = MaterialTheme.colorScheme.onSecondary
+        ),
+        navigationIcon = {
+            IconButton(onClick = {
+                navigationIconClicked.invoke()
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = stringResource(R.string.menu),
+                    tint = WhiteColor
+                )
+            }
+
+        },
+
+        actions = {
+            IconButton(onClick = {
+                logoutButtonClicked.invoke()
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Logout,
+                    contentDescription = stringResource(id = R.string.logout)
+                )
+            }
+
+        }
+    )
+
+}
+
+@Composable
+fun NavigationDrawerHeader() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(32.dp)
+    ) {
+
+        NavigationDrawerText(title = stringResource(id = R.string.navigation_header), 28.sp)
+
+    }
+}
+
+@Composable
+fun NavigationDrawerBody(
+    navigationDrawerItems: List<NavigationItem>,
+    onNavigationItemClicked: (NavigationItem) -> Unit
+) {
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        items(navigationDrawerItems) {
+            NavigationItemRow(item = it, onNavigationItemClicked)
+        }
+
+    }
+}
+
+@Composable
+fun NavigationItemRow(
+    item: NavigationItem,
+    onNavigationItemClicked: (NavigationItem) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onNavigationItemClicked.invoke(item)
+            }
+            .padding(all = 16.dp),
+
+        ) {
+        Icon(imageVector = item.icon, contentDescription = item.description)
+        Spacer(modifier = Modifier.width(18.dp))
+        NavigationDrawerText(title = item.title, 18.sp)
+
+
+    }
+}
+
+@Composable
+fun NavigationDrawerText(title: String, textUnit: TextUnit) {
+    val shadowOffSet = Offset(4f, 6f)
+
+    Text(
+        text = title,
+        style = TextStyle(
+            color = Primary,
+            fontSize = textUnit,
+            fontStyle = FontStyle.Normal,
+            shadow = Shadow(
+                color = Primary,
+                offset = shadowOffSet, 2f
+            )
+        )
     )
 }

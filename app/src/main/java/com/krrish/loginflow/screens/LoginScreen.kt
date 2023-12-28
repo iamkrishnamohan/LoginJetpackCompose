@@ -1,6 +1,5 @@
 package com.krrish.loginflow.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,8 +27,8 @@ import com.krrish.loginflow.components.NormalTextComponent
 import com.krrish.loginflow.components.PasswordTextFieldComponent
 import com.krrish.loginflow.components.UnderLinedTextComponent
 import com.krrish.loginflow.R
-import com.krrish.loginflow.data.LoginUIEvent
-import com.krrish.loginflow.data.LoginViewModel
+import com.krrish.loginflow.data.login.LoginUIEvent
+import com.krrish.loginflow.data.login.LoginViewModel
 import com.krrish.loginflow.navigation.PostOfficeAppRouter
 import com.krrish.loginflow.navigation.Screen
 import com.krrish.loginflow.navigation.SystemBackButtonHandler

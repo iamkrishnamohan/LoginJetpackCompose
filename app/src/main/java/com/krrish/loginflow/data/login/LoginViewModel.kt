@@ -1,4 +1,4 @@
-package com.krrish.loginflow.data
+package com.krrish.loginflow.data.login
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf

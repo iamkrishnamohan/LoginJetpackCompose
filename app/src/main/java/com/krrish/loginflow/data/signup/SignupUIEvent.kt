@@ -1,4 +1,4 @@
-package com.krrish.loginflow.data
+package com.krrish.loginflow.data.signup
 
 sealed class SignupUIEvent {
     data class FirstNameChanged(var firstName: String) : SignupUIEvent()

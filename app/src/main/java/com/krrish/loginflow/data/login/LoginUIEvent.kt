@@ -1,4 +1,4 @@
-package com.krrish.loginflow.data
+package com.krrish.loginflow.data.login
 
 sealed class LoginUIEvent {
     data class EmailChanged(val email: String) : LoginUIEvent()

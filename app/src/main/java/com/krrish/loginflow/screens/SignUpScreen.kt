@@ -27,8 +27,8 @@ import com.krrish.loginflow.components.MyTextFieldComponent
 import com.krrish.loginflow.components.NormalTextComponent
 import com.krrish.loginflow.components.PasswordTextFieldComponent
 import com.krrish.loginflow.R
-import com.krrish.loginflow.data.SignupViewModel
-import com.krrish.loginflow.data.SignupUIEvent
+import com.krrish.loginflow.data.signup.SignupViewModel
+import com.krrish.loginflow.data.signup.SignupUIEvent
 import com.krrish.loginflow.navigation.PostOfficeAppRouter
 import com.krrish.loginflow.navigation.Screen
 
